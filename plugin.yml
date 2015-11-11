@@ -1,0 +1,19 @@
+name: SpikeyCraftxServer
+main: cbp.double0negative.xServer.XServer
+authors: [double0negative, MCForger, spikeyrobot]
+version: 0.0.1
+commands:
+  xserver:
+    description: Stats and controls for xserver
+    usage: /XServer command or /x command
+    aliases: [x]
+  all:
+    description: Sends a command to all connected servers
+    usage: /all /[command]
+permissions:
+  xserver.message.receive:
+    description: Allows the player to receive xServerChat messages
+    default: true
+  xserver.admin:
+    description: Allows the player to configure xServerChat
+    default: op
