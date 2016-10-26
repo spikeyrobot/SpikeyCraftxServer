@@ -2,6 +2,7 @@ package cbp.double0negative.xServer.client;
 
 import java.util.HashMap;
 
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -10,6 +11,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 
 import cbp.double0negative.xServer.XServer;
 import cbp.double0negative.xServer.packets.Packet;
@@ -63,7 +65,15 @@ public class ChatListener implements Listener
 			XServer.restartMode = PacketTypes.DC_TYPE_STOP;
 		}
 	}
-	
+    @EventHandler(priority= EventPriority.MONITOR)
+	public void onServerCommand(ServerCommandEvent event) {
+    	if (event.getCommand().toLowerCase().startsWith("all") && event.getSender() instanceof ConsoleCommandSender)
+		{
+			event.setCommand(event.getCommand().replaceFirst("all /", ""));
+			c.send(new Packet(PacketTypes.PACKET_PLAYER_COMMAND, event.getCommand()));
+			LogManager.getInstance().info("/all sent (" + event.getCommand() + ")");
+		}
+	}
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void handlePlayerJoin(PlayerJoinEvent event)
 	{
